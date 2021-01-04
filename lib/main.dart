@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn_bloc_pattern/counter_event.dart';
+import 'package:learn_bloc_pattern/counter_state.dart';
 import 'counter_bloc.dart';
 
 void main() {
@@ -31,11 +33,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _bloc = CounterBloc();
+  final _bloc = CounterBloc(CounterState(counter: 0));
 
   @override
   void dispose() {
-    _bloc.dispose();
+    _bloc.close();
     super.dispose();
   }
 
@@ -45,25 +47,30 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: StreamBuilder(
-          stream: _bloc.coutner,
-          initialData: 0,
-          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  '${snapshot.data}',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ],
-            );
-          },
-        ),
+      body: BlocBuilder<CounterBloc, CounterState>(
+        cubit: _bloc,
+        builder: (context, state) {
+          return Center(
+            child: StreamBuilder(
+              stream: _bloc.coutner,
+              initialData: 0,
+              builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'You have pushed the button this many times:',
+                    ),
+                    Text(
+                      '${snapshot.data}',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                  ],
+                );
+              },
+            ),
+          );
+        },
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,

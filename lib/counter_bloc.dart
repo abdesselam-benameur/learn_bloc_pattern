@@ -1,35 +1,28 @@
-import 'dart:async';
-
+import 'package:bloc/bloc.dart';
 import 'package:learn_bloc_pattern/counter_event.dart';
+import 'package:learn_bloc_pattern/counter_state.dart';
 
-class CounterBloc {
-  int _counter = 0;
+class CounterBloc extends Bloc<CounterEvent, CounterState> {
+  CounterBloc(CounterState initialState) : super(initialState);
 
-  /// For events, exposing only a sink which is an input
-  Sink<CounterEvent> get counterEventSink => _counterEventSinkController.sink;
-  final _counterEventSinkController = StreamController<CounterEvent>();
-
-  /// For state, exposing only a stream which outputs data
-  Stream<int> get coutner => _counterStateStreamController.stream;
-  final _counterStateStreamController = StreamController<int>();
-
-  //StreamSink<int> get _inCounter => _counterStateStreamController.sink;
-
-  CounterBloc() {
-    _counterEventSinkController.stream.listen(_mapEventToState);
+  void onIncrement() {
+    add(IncrementEvent());
   }
 
-  void _mapEventToState(CounterEvent event) {
-    if (event is IncrementEvent)
-      _counter++;
-    else
-      _counter--;
-
-    _counterStateStreamController.sink.add(_counter);
+  void onDecrement() {
+    add(DecrementEvent());
   }
 
-  void dispose() {
-    _counterEventSinkController.close();
-    _counterStateStreamController.close();
+  // @override
+  // CounterState get initialState => CounterState.initial();
+
+  @override
+  Stream<CounterState> mapEventToState(CounterEvent event) async* {
+    final _currentState = state;
+    if (event is IncrementEvent) {
+      yield CounterState(counter: _currentState.counter + 1);
+    } else if (event is DecrementEvent) {
+      yield CounterState(counter: _currentState.counter - 1);
+    }
   }
 }
