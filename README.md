@@ -2,6 +2,11 @@
 
 A new Flutter project that I created to learn the BLoC pattern for state management.
 
+Some resources to learn from:
+
+- [Getting Started - Bloc (bloclibrary.dev)](https://bloclibrary.dev/#/gettingstarted)
+- [Flutter BLoC Pattern Tutorial by Reso Coder](https://www.youtube.com/playlist?list=PLB6lc7nQ1n4jCBkrirvVGr5b8rC95VAQ5)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

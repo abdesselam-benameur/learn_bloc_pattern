@@ -36,6 +36,8 @@ class SimpleBlocObserver extends BlocObserver {
     print('${cubit.runtimeType} $change');
     super.onChange(cubit, change);
   }
+
+  // onError can also be overridden in BlocObserver to handle all reported errors globally.
 }
 
 void main() {
