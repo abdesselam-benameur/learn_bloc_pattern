@@ -4,15 +4,18 @@ class CounterCubit extends Cubit<int> {
   CounterCubit() : super(0);
 
   void increment() => emit(state + 1);
+
+  // Note: A Change occurs just before the state of the Cubit is updated.
+  // A Change consists of the currentState and the nextState.
+  @override
+  void onChange(Change<int> change) {
+    print(change);
+    super.onChange(change);
+  }
 }
 
-Future<void> main() async {
-  final cubit = CounterCubit();
-  final subscription = cubit.listen(print); // 1
-  cubit.increment();
-  // Note: await Future.delayed(Duration.zero) is added for this example
-  // to avoid canceling the subscription immediately.
-  await Future.delayed(Duration.zero);
-  await subscription.cancel();
-  await cubit.close();
+void main() {
+  CounterCubit()
+    ..increment()
+    ..close();
 }
