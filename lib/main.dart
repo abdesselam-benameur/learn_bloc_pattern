@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Learn BLoC tuto"),
+        title: Text("Learn BLoC pattern"),
       ),
       body: Container(),
       // body: BlocBuilder<CounterBloc, CounterState>(
