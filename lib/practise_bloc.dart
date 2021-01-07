@@ -25,6 +25,7 @@ class CounterBloc extends Bloc<CounterEvent, int> {
     super.onChange(change);
   }
 
+  // Note: onTransition is invoked first (local before global) followed by onChange.
   @override
   void onTransition(Transition<CounterEvent, int> transition) {
     print(transition);
@@ -32,7 +33,28 @@ class CounterBloc extends Bloc<CounterEvent, int> {
   }
 }
 
+class SimpleBlocObserver extends BlocObserver {
+  @override
+  void onChange(Cubit cubit, Change change) {
+    print('${cubit.runtimeType} $change');
+    super.onChange(cubit, change);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    print('${bloc.runtimeType} $transition');
+    super.onTransition(bloc, transition);
+  }
+
+  @override
+  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
+    print('${cubit.runtimeType} $error $stackTrace');
+    super.onError(cubit, error, stackTrace);
+  }
+}
+
 void main() {
+  Bloc.observer = SimpleBlocObserver();
   CounterBloc()
     ..add(CounterEvent.increment)
     ..close();
