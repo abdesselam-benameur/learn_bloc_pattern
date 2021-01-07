@@ -31,6 +31,14 @@ class CounterBloc extends Bloc<CounterEvent, int> {
     print(transition);
     super.onTransition(transition);
   }
+
+  // Note: onEvent is called as soon as the event is added.
+  // The local onEvent is invoked before the global onEvent in BlocObserver.
+  @override
+  void onEvent(CounterEvent event) {
+    print(event);
+    super.onEvent(event);
+  }
 }
 
 class SimpleBlocObserver extends BlocObserver {
@@ -44,6 +52,12 @@ class SimpleBlocObserver extends BlocObserver {
   void onTransition(Bloc bloc, Transition transition) {
     print('${bloc.runtimeType} $transition');
     super.onTransition(bloc, transition);
+  }
+
+  @override
+  void onEvent(Bloc bloc, Object event) {
+    print('${bloc.runtimeType} $event');
+    super.onEvent(bloc, event);
   }
 
   @override
