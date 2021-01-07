@@ -22,13 +22,12 @@ class CounterBloc extends Bloc<CounterEvent, int> {
 
 Future<void> main() async {
   final bloc = CounterBloc();
-  print(bloc.state); // 0
-  bloc.add(CounterEvent.increment);
+  final subscription = bloc.listen(print); // 1
 
-  // Note: await Future.delayed(Duration.zero) is added to ensure we wait for
-  // the next event-loop iteration (allowing mapEventToState to process the increment event).
+  // Note: await Future.delayed(Duration.zero) is added for this example to avoid
+  // canceling the subscription immediately.
   await Future.delayed(Duration.zero);
 
-  print(bloc.state); // 1
+  await subscription.cancel();
   await bloc.close();
 }
