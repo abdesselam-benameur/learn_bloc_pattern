@@ -3,7 +3,10 @@ import 'package:bloc/bloc.dart';
 class CounterCubit extends Cubit<int> {
   CounterCubit() : super(0);
 
-  void increment() => emit(state + 1);
+  void increment() {
+    addError(Exception('increment error!'), StackTrace.current);
+    emit(state + 1);
+  }
 
   // Note: A Change occurs just before the state of the Cubit is updated.
   // A Change consists of the currentState and the nextState.
@@ -11,6 +14,13 @@ class CounterCubit extends Cubit<int> {
   void onChange(Change<int> change) {
     print(change);
     super.onChange(change);
+  }
+
+  // Note: onError can be overridden within the Cubit to handle all errors for a specific Cubit.
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    print('$error, $stackTrace');
+    super.onError(error, stackTrace);
   }
 }
 
