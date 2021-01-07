@@ -1,4 +1,4 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
 
 enum CounterEvent { increment, decrement }
 
@@ -18,16 +18,16 @@ class CounterBloc extends Bloc<CounterEvent, int> {
         break;
     }
   }
+
+  @override
+  void onChange(Change<int> change) {
+    print(change);
+    super.onChange(change);
+  }
 }
 
-Future<void> main() async {
-  final bloc = CounterBloc();
-  final subscription = bloc.listen(print); // 1
-
-  // Note: await Future.delayed(Duration.zero) is added for this example to avoid
-  // canceling the subscription immediately.
-  await Future.delayed(Duration.zero);
-
-  await subscription.cancel();
-  await bloc.close();
+void main() {
+  CounterBloc()
+    ..add(CounterEvent.increment)
+    ..close();
 }
