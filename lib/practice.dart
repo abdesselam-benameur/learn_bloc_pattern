@@ -6,10 +6,13 @@ class CounterCubit extends Cubit<int> {
   void increment() => emit(state + 1);
 }
 
-void main() {
+Future<void> main() async {
   final cubit = CounterCubit();
-  print(cubit.state); // 0
+  final subscription = cubit.listen(print); // 1
   cubit.increment();
-  print(cubit.state); // 1
-  cubit.close();
+  // Note: await Future.delayed(Duration.zero) is added for this example
+  // to avoid canceling the subscription immediately.
+  await Future.delayed(Duration.zero);
+  await subscription.cancel();
+  await cubit.close();
 }
