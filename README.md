@@ -1,6 +1,6 @@
 # learn_bloc_pattern
 
-A new Flutter project.
+A new Flutter project that I created to learn the BLoC pattern for state management.
 
 ## Getting Started
 
